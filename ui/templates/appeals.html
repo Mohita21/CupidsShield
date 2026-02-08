@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Appeals - CupidsShield{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 30px;">Appeals Review</h2>
+
+<div class="card">
+    {% if appeals %}
+    <table>
+        <thead>
+            <tr>
+                <th>Appeal ID</th>
+                <th>Case ID</th>
+                <th>User ID</th>
+                <th>Violation</th>
+                <th>Submitted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appeal in appeals %}
+            <tr>
+                <td><code>{{ appeal.id }}</code></td>
+                <td><code>{{ appeal.case_id }}</code></td>
+                <td>{{ appeal.user_id }}</td>
+                <td>
+                    {% if appeal.violation_type %}
+                    <span class="badge badge-medium">{{ appeal.violation_type }}</span>
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td style="font-size: 12px;">{{ appeal.created_at }}</td>
+                <td>
+                    <a href="/appeal/{{ appeal.id }}" class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
+                        Review Appeal
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-info">
+        No pending appeals.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

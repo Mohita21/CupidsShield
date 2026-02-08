@@ -1,0 +1,168 @@
+# CupidsShield Appeals Configuration
+
+# Confidence thresholds for appeal decisions
+confidence_thresholds:
+  auto_uphold: 0.90      # >= 90% confidence → uphold original decision
+  auto_overturn: 0.85    # >= 85% confidence → overturn decision
+  escalate: 0.70         # < 70% confidence → escalate to senior moderator
+
+# Appeal evaluation criteria
+evaluation_criteria:
+  new_evidence:
+    weight: 0.4
+    description: "User provided substantial new evidence not available during original review"
+    examples:
+      - "Verification documents"
+      - "Context that was missing"
+      - "Proof of account compromise"
+
+  policy_misinterpretation:
+    weight: 0.3
+    description: "Original decision may have misinterpreted policy"
+    examples:
+      - "Edge case not clearly covered"
+      - "Context changes violation severity"
+      - "Nuance missed in automated review"
+
+  user_explanation:
+    weight: 0.2
+    description: "User provided compelling explanation"
+    examples:
+      - "Clarification of misunderstood content"
+      - "Cultural or language context"
+      - "Technical error explanation"
+
+  user_history:
+    weight: 0.1
+    description: "User's historical behavior on platform"
+    examples:
+      - "First-time offender vs repeat violator"
+      - "Generally positive community member"
+      - "Pattern of violations"
+
+# Appeal outcomes and actions
+outcomes:
+  upheld:
+    description: "Original decision stands"
+    actions:
+      - maintain_ban_or_warning
+      - notify_user_with_detailed_reasoning
+      - mark_appeal_complete
+
+  overturned:
+    description: "Original decision reversed"
+    actions:
+      - reverse_moderation_action
+      - restore_account_access
+      - remove_violation_from_record
+      - notify_user_with_apology
+      - update_case_status
+
+  escalated:
+    description: "Requires senior moderator review"
+    actions:
+      - add_to_senior_review_queue
+      - flag_for_policy_team
+      - pause_ban_pending_review
+      - notify_user_of_review_status
+
+# Time limits
+time_limits:
+  appeal_window_days: 30        # Users have 30 days to appeal
+  review_target_hours: 24       # Target to review appeals within 24 hours
+  escalated_target_hours: 48    # Escalated appeals reviewed within 48 hours
+  max_appeals_per_case: 1       # Users can appeal each case once
+
+# Valid appeal reasons
+valid_appeal_reasons:
+  - "I have new evidence to provide"
+  - "I believe the policy was misinterpreted"
+  - "There was a misunderstanding or context missing"
+  - "My account was compromised"
+  - "This was a technical error"
+  - "The content was taken out of context"
+
+# Invalid appeal reasons (auto-reject with explanation)
+invalid_appeal_reasons:
+  - pattern: "didn't do anything wrong"
+    response: "Please provide specific evidence or explanation rather than general denial"
+  - pattern: "just joking"
+    response: "Intent doesn't excuse violation of community guidelines"
+  - pattern: "not fair"
+    response: "Please explain specifically why you believe the decision was incorrect"
+  - pattern: "everyone does it"
+    response: "Other violations don't justify your own"
+
+# Agent configuration
+agent_config:
+  model: "gpt-4"
+  temperature: 0.2  # Slightly higher for nuanced re-evaluation
+  max_tokens: 1500
+  timeout: 45  # seconds - appeals may need more processing time
+
+# Context retrieval settings
+context_retrieval:
+  include_original_case: true
+  include_user_history: true
+  include_similar_cases: true
+  similar_cases_count: 3
+  user_history_days: 90
+
+# Re-evaluation process
+re_evaluation:
+  review_original_evidence: true
+  review_new_evidence: true
+  check_policy_updates: true  # Check if policies changed since original decision
+  consider_precedent: true    # Look at similar appeals outcomes
+  require_explanation: true   # Always require detailed reasoning
+
+# Overturn rate monitoring
+monitoring:
+  track_overturn_rate: true
+  alert_high_overturn_rate: 0.25  # Alert if >25% appeals overturned
+  track_by_violation_type: true
+  track_by_original_reviewer: true  # Identify if certain reviewers need calibration
+
+# Senior moderator escalation
+senior_moderator:
+  escalate_conditions:
+    - low_confidence  # Confidence below threshold
+    - high_stakes     # Critical violations or permanent bans
+    - policy_ambiguity  # Unclear policy application
+    - repeat_appeal   # User has appealed before
+
+  required_for:
+    - permanent_ban_overturn
+    - critical_violation_overturn
+    - policy_precedent_setting
+
+# User communication
+communication:
+  upheld_template: |
+    After careful review of your appeal, we have decided to uphold the original decision.
+
+    Reason: {reasoning}
+
+    If you have additional evidence, you may contact support within {days_remaining} days.
+
+  overturned_template: |
+    After reviewing your appeal and new evidence, we have decided to overturn the original decision.
+
+    We apologize for the inconvenience. Your account has been restored and the violation removed from your record.
+
+    Reason for overturn: {reasoning}
+
+  escalated_template: |
+    Thank you for your appeal. Your case has been escalated to our senior moderation team for additional review.
+
+    We expect to complete this review within {target_hours} hours.
+
+    You will be notified once a final decision is made.
+
+# Audit and compliance
+audit:
+  log_all_appeal_decisions: true
+  require_justification: true
+  track_appeal_to_decision_time: true
+  monthly_review_required: true
+  quality_assurance_sample_rate: 0.1  # QA reviews 10% of appeals

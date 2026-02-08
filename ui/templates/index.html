@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - CupidsShield{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 30px;">Dashboard</h2>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value">{{ stats.total_cases }}</div>
+        <div class="stat-label">Total Cases</div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+        <div class="stat-value">{{ stats.cases_24h }}</div>
+        <div class="stat-label">Cases (24h)</div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        <div class="stat-value">{{ stats.review_queue_size }}</div>
+        <div class="stat-label">Queue Size</div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+        <div class="stat-value">{{ stats.pending_appeals }}</div>
+        <div class="stat-label">Pending Appeals</div>
+    </div>
+</div>
+
+<div class="grid-2">
+    <div class="card">
+        <h3 style="margin-bottom: 20px;">Decisions Breakdown</h3>
+        {% if stats.decisions %}
+            {% for decision, count in stats.decisions.items() %}
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <span style="text-transform: capitalize;">
+                    <span class="badge badge-{{ decision }}">{{ decision }}</span>
+                </span>
+                <strong>{{ count }}</strong>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p style="color: #666;">No data yet</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h3 style="margin-bottom: 20px;">Vector Store</h3>
+        <div style="margin-bottom: 12px;">
+            <strong>Flagged Content:</strong> {{ vs_stats.flagged_content_count }} embeddings
+        </div>
+        <div style="margin-bottom: 12px;">
+            <strong>Historical Cases:</strong> {{ vs_stats.historical_cases_count }} cases
+        </div>
+        <div>
+            <strong>T&S Policies:</strong> {{ vs_stats.policy_count }} policies
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom: 20px;">Quick Actions</h3>
+    <div style="display: flex; gap: 12px;">
+        <a href="/queue" class="btn btn-primary">View Review Queue</a>
+        <a href="/appeals" class="btn btn-primary">Review Appeals</a>
+        <a href="/metrics" class="btn btn-primary">View Metrics</a>
+    </div>
+</div>
+
+<div class="alert alert-info">
+    <strong>👋 Welcome to CupidsShield!</strong> This is your Human-in-the-Loop moderation interface.
+    Review flagged content, manage appeals, and override agent decisions.
+</div>
+{% endblock %}

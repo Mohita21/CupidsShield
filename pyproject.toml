@@ -1,0 +1,64 @@
+[project]
+name = "cupidsshield"
+version = "0.1.0"
+description = "Trust & Safety AI Agent System for dating platforms using LangGraph and MCP"
+requires-python = ">=3.11"
+authors = [
+    { name = "Mohita" }
+]
+readme = "README.md"
+
+dependencies = [
+    "langgraph>=0.2.53",
+    "langchain>=0.3.15",
+    "langchain-openai>=0.2.14",
+    "langchain-core>=0.3.28",
+    "langsmith>=0.2.8",
+    "mcp>=1.3.2",
+    "anthropic>=0.43.0",
+    "chromadb>=0.5.23",
+    "sentence-transformers>=3.4.0",
+    "aiosqlite>=0.20.0",
+    "fastapi>=0.115.12",
+    "uvicorn[standard]>=0.34.0",
+    "jinja2>=3.1.5",
+    "python-multipart>=0.0.20",
+    "pydantic>=2.10.5",
+    "pydantic-settings>=2.7.1",
+    "python-dotenv>=1.0.1",
+    "pyyaml>=6.0.2",
+    "httpx>=0.28.1",
+    "prometheus-client>=0.21.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.25.2",
+    "pytest-cov>=6.0.0",
+    "black>=24.10.0",
+    "ruff>=0.9.2",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

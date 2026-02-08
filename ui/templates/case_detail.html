@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}Case {{ case.id }} - CupidsShield{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 30px;">Case Review</h2>
+
+{% if case.decision == 'escalated' %}
+<div class="alert" style="background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%); color: white; border: none; font-weight: 600; margin-bottom: 24px;">
+    ⚠️ <strong>ESCALATED CASE - MODERATOR DECISION REQUIRED</strong><br>
+    <span style="font-weight: normal; font-size: 14px;">This case was escalated by the AI agent because confidence was below the threshold. Review the details below and make your decision.</span>
+</div>
+{% endif %}
+
+<div class="grid-2">
+    <div>
+        <div class="card">
+            <h3 style="margin-bottom: 20px;">Case Information</h3>
+            <div style="margin-bottom: 12px;">
+                <strong>Case ID:</strong> <code>{{ case.id }}</code>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <strong>User ID:</strong> {{ case.user_id }}
+            </div>
+            <div style="margin-bottom: 12px;">
+                <strong>Content Type:</strong> {{ case.content_type }}
+            </div>
+            <div style="margin-bottom: 12px;">
+                <strong>Created:</strong> {{ case.created_at }}
+            </div>
+            <div style="margin-bottom: 12px;">
+                <strong>Reviewed By:</strong> {{ case.reviewed_by }}
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 20px;">Agent Decision</h3>
+            <div style="margin-bottom: 12px;">
+                <strong>Decision:</strong>
+                <span class="badge badge-{{ case.decision }}">{{ case.decision }}</span>
+            </div>
+            {% if case.violation_type %}
+            <div style="margin-bottom: 12px;">
+                <strong>Violation:</strong>
+                <span class="badge badge-medium">{{ case.violation_type }}</span>
+            </div>
+            {% endif %}
+            {% if case.severity %}
+            <div style="margin-bottom: 12px;">
+                <strong>Severity:</strong>
+                <span class="badge badge-{{ case.severity }}">{{ case.severity }}</span>
+            </div>
+            {% endif %}
+            <div style="margin-bottom: 12px;">
+                <strong>Confidence:</strong>
+                <div style="background: #f5f5f7; padding: 8px; border-radius: 4px; margin-top: 4px;">
+                    {{ (case.confidence * 100)|round(1) }}%
+                </div>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <strong>Risk Score:</strong>
+                <div style="background: #f5f5f7; padding: 8px; border-radius: 4px; margin-top: 4px;">
+                    {{ case.risk_score|round(2) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="card">
+            <h3 style="margin-bottom: 20px;">Content</h3>
+            <div class="content-box">{{ case.content }}</div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 20px;">Agent Reasoning</h3>
+            <div class="content-box">{{ case.reasoning }}</div>
+        </div>
+    </div>
+</div>
+
+{% if user_history %}
+<div class="card">
+    <h3 style="margin-bottom: 20px;">User History ({{ user_history|length }} recent cases)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Case ID</th>
+                <th>Type</th>
+                <th>Decision</th>
+                <th>Violation</th>
+                <th>Severity</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hist_case in user_history %}
+            <tr>
+                <td><code>{{ hist_case.id }}</code></td>
+                <td>{{ hist_case.content_type }}</td>
+                <td><span class="badge badge-{{ hist_case.decision }}">{{ hist_case.decision }}</span></td>
+                <td>
+                    {% if hist_case.violation_type %}
+                    {{ hist_case.violation_type }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if hist_case.severity %}
+                    <span class="badge badge-{{ hist_case.severity }}">{{ hist_case.severity }}</span>
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td style="font-size: 12px;">{{ hist_case.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+{% if similar_cases %}
+<div class="card">
+    <h3 style="margin-bottom: 20px;">Similar Cases (Vector Search)</h3>
+    {% for sim_case in similar_cases %}
+    <div style="background: #f5f5f7; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+        <div style="margin-bottom: 8px;">
+            <strong>Similarity:</strong> {{ (sim_case.similarity_score * 100)|round(1) }}%
+            <span class="badge badge-medium" style="margin-left: 8px;">
+                {{ sim_case.metadata.violation_type }}
+            </span>
+            <span class="badge badge-{{ sim_case.metadata.severity }}">
+                {{ sim_case.metadata.severity }}
+            </span>
+        </div>
+        <div class="content-box" style="font-size: 12px; max-height: 100px; overflow: hidden;">
+            {{ sim_case.content[:200] }}...
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="card" style="border: 2px solid #0071e3; background: linear-gradient(to bottom, #ffffff, #f8f9fa);">
+    <h3 style="margin-bottom: 20px; color: #0071e3;">
+        🎯 Moderator Decision
+    </h3>
+
+    {% if case.decision == 'escalated' %}
+    <div class="alert" style="background: #fff3cd; color: #856404; border-left: 4px solid #ffc107; margin-bottom: 20px;">
+        <strong>⚠️ Action Required:</strong> This case needs your decision. Review the content, agent's reasoning, user history, and similar cases before deciding.
+    </div>
+    {% else %}
+    <div class="alert alert-info" style="margin-bottom: 20px;">
+        💡 As a human moderator, you can review and override the agent's decision if needed.
+    </div>
+    {% endif %}
+
+    <form method="POST" action="/case/{{ case.id }}/review">
+        <div class="form-group">
+            <label for="decision" style="font-weight: 600; font-size: 15px; color: #1d1d1f;">
+                Your Decision: <span style="color: #d32f2f;">*</span>
+            </label>
+            <select name="decision" id="decision" required style="font-size: 15px; padding: 12px; border: 2px solid #d2d2d7; border-radius: 8px;">
+                <option value="">-- Select Decision --</option>
+                <option value="approved" {% if case.decision == 'approved' %}selected{% endif %}>✅ Approve - Content is acceptable</option>
+                <option value="rejected" {% if case.decision == 'rejected' or case.decision == 'escalated' %}selected{% endif %}>❌ Reject - Remove content and take action</option>
+                <option value="escalated">⬆️ Escalate to Senior Moderator</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="reasoning" style="font-weight: 600; font-size: 15px; color: #1d1d1f;">
+                Your Reasoning: <span style="color: #d32f2f;">*</span>
+            </label>
+            <div style="font-size: 13px; color: #666; margin-bottom: 8px;">
+                Explain why you made this decision. Include any relevant context from the user's history or similar cases.
+            </div>
+            <textarea name="reasoning" id="reasoning" required
+                      placeholder="Example: After reviewing the content and user history, I believe this message contains clear indicators of a pig butchering scam (financial discussion + moving off-platform). The user has 2 prior violations. Decision: Reject and suspend account."
+                      style="min-height: 120px; font-size: 14px; padding: 12px; border: 2px solid #d2d2d7; border-radius: 8px;"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="moderator_id" style="font-weight: 600; font-size: 15px; color: #1d1d1f;">
+                Moderator ID: <span style="color: #d32f2f;">*</span>
+            </label>
+            <input type="text" name="moderator_id" id="moderator_id" value="moderator_001" required
+                   style="font-size: 14px; padding: 12px; border: 2px solid #d2d2d7; border-radius: 8px;">
+        </div>
+
+        <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e5e5e7;">
+            <button type="submit" class="btn btn-primary" style="font-size: 16px; padding: 14px 32px; font-weight: 600;">
+                ✓ Submit Decision
+            </button>
+            <a href="/queue" class="btn btn-warning" style="margin-left: 12px; font-size: 16px; padding: 14px 32px;">
+                ← Back to Queue
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

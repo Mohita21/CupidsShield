@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Appeal {{ appeal.id }} - CupidsShield{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 30px;">Appeal Review</h2>
+
+<div class="grid-2">
+    <div>
+        <div class="card">
+            <h3 style="margin-bottom: 20px;">Appeal Information</h3>
+            <div style="margin-bottom: 12px;">
+                <strong>Appeal ID:</strong> <code>{{ appeal.id }}</code>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <strong>Case ID:</strong> <code>{{ appeal.case_id }}</code>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <strong>Submitted:</strong> {{ appeal.created_at }}
+            </div>
+            <div style="margin-bottom: 12px;">
+                <strong>Status:</strong>
+                <span class="badge badge-pending">{{ appeal.appeal_decision or 'pending' }}</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 20px;">User's Appeal</h3>
+            <div class="content-box">{{ appeal.user_explanation }}</div>
+            {% if appeal.new_evidence %}
+            <h4 style="margin-top: 20px; margin-bottom: 10px;">New Evidence:</h4>
+            <div class="content-box">{{ appeal.new_evidence }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div>
+        <div class="card">
+            <h3 style="margin-bottom: 20px;">Original Case</h3>
+            <div style="margin-bottom: 12px;">
+                <strong>Decision:</strong>
+                <span class="badge badge-{{ original_case.decision }}">{{ original_case.decision }}</span>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <strong>Violation:</strong>
+                {% if original_case.violation_type %}
+                <span class="badge badge-medium">{{ original_case.violation_type }}</span>
+                {% else %}
+                -
+                {% endif %}
+            </div>
+            <div style="margin-bottom: 12px;">
+                <strong>Severity:</strong>
+                {% if original_case.severity %}
+                <span class="badge badge-{{ original_case.severity }}">{{ original_case.severity }}</span>
+                {% else %}
+                -
+                {% endif %}
+            </div>
+            <div style="margin-bottom: 12px;">
+                <strong>Confidence:</strong> {{ (original_case.confidence * 100)|round(1) }}%
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 20px;">Original Content</h3>
+            <div class="content-box">{{ original_case.content }}</div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 20px;">Original Reasoning</h3>
+            <div class="content-box">{{ original_case.reasoning }}</div>
+        </div>
+    </div>
+</div>
+
+{% if user_history %}
+<div class="card">
+    <h3 style="margin-bottom: 20px;">User History</h3>
+    <p style="margin-bottom: 12px;">
+        <strong>Total Cases:</strong> {{ user_history|length }}
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Case ID</th>
+                <th>Decision</th>
+                <th>Violation</th>
+                <th>Severity</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hist_case in user_history %}
+            <tr>
+                <td><code>{{ hist_case.id }}</code></td>
+                <td><span class="badge badge-{{ hist_case.decision }}">{{ hist_case.decision }}</span></td>
+                <td>{{ hist_case.violation_type or '-' }}</td>
+                <td>
+                    {% if hist_case.severity %}
+                    <span class="badge badge-{{ hist_case.severity }}">{{ hist_case.severity }}</span>
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td style="font-size: 12px;">{{ hist_case.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<div class="card">
+    <h3 style="margin-bottom: 20px;">Appeal Decision</h3>
+    <div class="alert alert-info">
+        Review the appeal and decide whether to uphold or overturn the original decision.
+    </div>
+
+    <form method="POST" action="/appeal/{{ appeal.id }}/review">
+        <div class="form-group">
+            <label for="decision">Your Decision:</label>
+            <select name="decision" id="decision" required>
+                <option value="upheld">Uphold (original decision stands)</option>
+                <option value="overturned">Overturn (reverse original decision)</option>
+                <option value="escalated">Escalate to Senior Moderator</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="reasoning">Your Reasoning:</label>
+            <textarea name="reasoning" id="reasoning" required placeholder="Explain your decision..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="moderator_id">Moderator ID:</label>
+            <input type="text" name="moderator_id" id="moderator_id" value="moderator_001" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit Decision</button>
+        <a href="/appeals" class="btn btn-warning" style="margin-left: 12px;">Back to Appeals</a>
+    </form>
+</div>
+{% endblock %}

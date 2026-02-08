@@ -1,0 +1,150 @@
+{
+  "test_scenarios": [
+    {
+      "id": "pig_butchering_1",
+      "name": "Pig Butchering Scam - Financial Request",
+      "content_type": "message",
+      "user_id": "user_scammer_001",
+      "content": "My dearest love, I've been thinking about our future together. I have an amazing investment opportunity in cryptocurrency that could make us both very rich! My uncle works at a trading firm and gave me insider information. We need to act fast though. Can you send me $5000 to get started? I promise we'll be millionaires soon and can finally meet in person!",
+      "expected_violation": "scams",
+      "expected_severity": "high",
+      "description": "Classic pig butchering scam with rapid intimacy, financial request, and investment opportunity"
+    },
+    {
+      "id": "pig_butchering_2",
+      "name": "Pig Butchering Scam - Moving Off Platform",
+      "content_type": "message",
+      "user_id": "user_scammer_002",
+      "content": "Hey beautiful! You're so special to me. I don't like using this app much, it's not safe. Can we move our conversation to WhatsApp? My number is +1-555-0123. Also, I need to tell you about this crypto trading platform I've been using. It's making me $10,000 a week! I can show you how.",
+      "expected_violation": "scams",
+      "expected_severity": "medium",
+      "description": "Early stage pig butchering with platform migration and crypto mention"
+    },
+    {
+      "id": "harassment_1",
+      "name": "Harassment - Threats",
+      "content_type": "message",
+      "user_id": "user_harasser_001",
+      "content": "You're such a stuck up bitch. Who do you think you are ignoring me? I know where you work at that coffee shop downtown. You better respond to me or you'll regret it. I'm going to make your life hell.",
+      "expected_violation": "harassment",
+      "expected_severity": "critical",
+      "description": "Severe harassment with direct threats and stalking behavior"
+    },
+    {
+      "id": "harassment_2",
+      "name": "Harassment - Persistent Unwanted Contact",
+      "content_type": "message",
+      "user_id": "user_harasser_002",
+      "content": "Why aren't you responding??? I sent you 15 messages. You're online I can see. This is so disrespectful. You must be talking to other guys. You're a waste of my time. Ugly anyway.",
+      "expected_violation": "harassment",
+      "expected_severity": "medium",
+      "description": "Persistent unwanted contact with insulting language"
+    },
+    {
+      "id": "fake_profile_1",
+      "name": "Fake Profile - Stock Photos",
+      "content_type": "profile",
+      "user_id": "user_fake_001",
+      "content": "Name: Victoria, Age: 24, Location: Los Angeles\nBio: CEO and entrepreneur. Love traveling the world in my private jet. Looking for someone to spoil. I have a modeling contract with Elite Model Management.\nPhotos: Professional studio headshots, luxury car backgrounds, designer clothes",
+      "expected_violation": "fake_profile",
+      "expected_severity": "high",
+      "description": "Fake profile with too-good-to-be-true details and professional photos"
+    },
+    {
+      "id": "fake_profile_2",
+      "name": "Fake Profile - Inconsistent Information",
+      "content_type": "profile",
+      "user_id": "user_fake_002",
+      "content": "Name: Sarah, Age: 28, Location: New York\nBio: Doctor at Johns Hopkins Hospital in Baltimore. Love the NYC nightlife! Recent grad from UCLA. Grew up in Boston but my photos are all from Miami beaches.\nLooking for: Serious relationship, no games!",
+      "expected_violation": "fake_profile",
+      "expected_severity": "medium",
+      "description": "Profile with inconsistent location and career information"
+    },
+    {
+      "id": "inappropriate_1",
+      "name": "Inappropriate Content - Sexual Solicitation",
+      "content_type": "message",
+      "user_id": "user_inappropriate_001",
+      "content": "Hey sexy, skip the small talk. I'm looking for some fun tonight. Come over to my place and I'll show you a good time. I have a hot tub and champagne ready. No strings attached, just physical fun ;)",
+      "expected_violation": "inappropriate",
+      "expected_severity": "high",
+      "description": "Clear sexual solicitation"
+    },
+    {
+      "id": "inappropriate_2",
+      "name": "Inappropriate Content - Suggestive",
+      "content_type": "bio",
+      "user_id": "user_inappropriate_002",
+      "content": "Looking for generous men who know how to treat a lady right ;) I love expensive gifts and nice dinners. Mutually beneficial arrangements only. Serious inquiries DM me your offer.",
+      "expected_violation": "inappropriate",
+      "expected_severity": "medium",
+      "description": "Suggestive content implying transactional relationship"
+    },
+    {
+      "id": "age_verification_1",
+      "name": "Age Verification - Underage Indicators",
+      "content_type": "profile",
+      "user_id": "user_minor_001",
+      "content": "Name: Emily, Age: 18, Location: San Diego\nBio: Senior at Westview High School! Can't wait for prom next month! Just turned 18 last week so I'm finally old enough for this app lol. Live with my parents still but whatever. Love TikTok and hanging with my squad!",
+      "expected_violation": "age_verification",
+      "expected_severity": "high",
+      "description": "Profile claiming to be 18 but mentioning high school and recent birthday"
+    },
+    {
+      "id": "age_verification_2",
+      "name": "Age Verification - Minor Admission",
+      "content_type": "message",
+      "user_id": "user_minor_002",
+      "content": "Hey! So I actually just turned 17 but I'll be 18 in like 3 months so it's not a big deal right? Don't tell the app lol. I just want to meet people because high school guys are so immature.",
+      "expected_violation": "age_verification",
+      "expected_severity": "critical",
+      "description": "Direct admission of being underage"
+    },
+    {
+      "id": "clean_content_1",
+      "name": "Clean Content - Normal Intro",
+      "content_type": "message",
+      "user_id": "user_clean_001",
+      "content": "Hi! I saw we both love hiking and photography. Have you been to any good trails recently? I just moved to the area and I'm looking for new spots to explore. Would love to hear your recommendations!",
+      "expected_violation": null,
+      "expected_severity": "low",
+      "description": "Completely appropriate message"
+    },
+    {
+      "id": "clean_content_2",
+      "name": "Clean Content - Profile",
+      "content_type": "profile",
+      "user_id": "user_clean_002",
+      "content": "Name: Michael, Age: 32, Location: Seattle\nBio: Software engineer who loves the outdoors. Weekends you'll find me hiking, cycling, or trying new restaurants. Big foodie and always looking for the next great taco spot. Looking for someone who can keep up with my terrible puns and good conversation. Let's grab coffee!",
+      "expected_violation": null,
+      "expected_severity": "low",
+      "description": "Normal, appropriate dating profile"
+    }
+  ],
+  "appeal_scenarios": [
+    {
+      "id": "appeal_context_missing",
+      "case_id": "case_to_be_created",
+      "user_explanation": "This message was taken out of context. The other person initiated this conversation style and I was just responding in kind. I don't normally communicate this way and my profile history shows I'm a respectful user.",
+      "new_evidence": "Screenshot showing the other person messaged first with similar language",
+      "expected_decision": "overturned",
+      "description": "Appeal with valid context and new evidence"
+    },
+    {
+      "id": "appeal_account_compromise",
+      "case_id": "case_to_be_created",
+      "user_explanation": "My account was hacked! I never sent those messages. I've since changed my password and enabled two-factor authentication. I've been a member for 2 years with no violations.",
+      "new_evidence": "Login activity showing unusual IP addresses from different country during violation time",
+      "expected_decision": "overturned",
+      "description": "Appeal claiming account compromise with evidence"
+    },
+    {
+      "id": "appeal_no_merit",
+      "case_id": "case_to_be_created",
+      "user_explanation": "I didn't do anything wrong. This is unfair and I demand to be unbanned immediately. Other people do worse things and don't get banned.",
+      "new_evidence": null,
+      "expected_decision": "upheld",
+      "description": "Appeal with no new evidence or valid argument"
+    }
+  ]
+}

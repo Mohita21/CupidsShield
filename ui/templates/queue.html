@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Review Queue - CupidsShield{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 30px;">Review Queue</h2>
+
+<div style="margin-bottom: 20px;">
+    <a href="/queue?status=pending" class="btn {% if status == 'pending' %}btn-primary{% else %}btn-warning{% endif %}">
+        Pending
+    </a>
+    <a href="/queue?status=in_review" class="btn {% if status == 'in_review' %}btn-primary{% else %}btn-warning{% endif %}">
+        In Review
+    </a>
+    <a href="/queue?status=completed" class="btn {% if status == 'completed' %}btn-primary{% else %}btn-warning{% endif %}">
+        Completed
+    </a>
+</div>
+
+<div class="card">
+    {% if queue_items %}
+    <table>
+        <thead>
+            <tr>
+                <th>Queue ID</th>
+                <th>Priority</th>
+                <th>User ID</th>
+                <th>Violation</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in queue_items %}
+            <tr>
+                <td><code>{{ item.id }}</code></td>
+                <td><span class="badge badge-{{ item.priority }}">{{ item.priority }}</span></td>
+                <td>{{ item.user_id or 'N/A' }}</td>
+                <td>
+                    {% if item.violation_type %}
+                    <span class="badge badge-medium">{{ item.violation_type }}</span>
+                    {% else %}
+                    <span style="color: #666;">-</span>
+                    {% endif %}
+                </td>
+                <td style="font-size: 12px;">{{ item.created_at }}</td>
+                <td>
+                    {% if item.case_id %}
+                    <a href="/case/{{ item.case_id }}" class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
+                        Review Case
+                    </a>
+                    {% elif item.appeal_id %}
+                    <a href="/appeal/{{ item.appeal_id }}" class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
+                        Review Appeal
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-info">
+        No items in {{ status }} queue.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

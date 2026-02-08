@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Metrics - CupidsShield{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 30px;">Metrics Dashboard</h2>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value">{{ stats.total_cases }}</div>
+        <div class="stat-label">Total Cases</div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+        <div class="stat-value">{{ stats.cases_24h }}</div>
+        <div class="stat-label">Cases (24h)</div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        <div class="stat-value">{{ stats.review_queue_size }}</div>
+        <div class="stat-label">Queue Size</div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+        <div class="stat-value">{{ (confidence_avg * 100)|round(1) }}%</div>
+        <div class="stat-label">Avg Confidence</div>
+    </div>
+</div>
+
+<div class="grid-2">
+    <div class="card">
+        <h3 style="margin-bottom: 20px;">Decisions Breakdown</h3>
+        {% if stats.decisions %}
+        {% for decision, count in stats.decisions.items() %}
+        <div style="margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <span style="text-transform: capitalize;">
+                    <span class="badge badge-{{ decision }}">{{ decision }}</span>
+                </span>
+                <strong>{{ count }}</strong>
+            </div>
+            <div style="background: #e5e5e7; height: 8px; border-radius: 4px;">
+                <div style="background: #0071e3; height: 100%; width: {{ (count / stats.total_cases * 100)|round(0) }}%; border-radius: 4px;"></div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p style="color: #666;">No data yet</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h3 style="margin-bottom: 20px;">Violation Types</h3>
+        {% if violation_breakdown %}
+        {% for vtype, count in violation_breakdown.items() %}
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+            <span style="text-transform: capitalize;">{{ vtype }}</span>
+            <strong>{{ count }}</strong>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p style="color: #666;">No violations detected yet</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom: 20px;">Agent Performance</h3>
+    <div class="grid-2">
+        <div>
+            <h4 style="margin-bottom: 12px; color: #666; font-size: 14px;">Average Confidence</h4>
+            <div style="font-size: 32px; font-weight: 700; margin-bottom: 8px;">
+                {{ (confidence_avg * 100)|round(1) }}%
+            </div>
+            <div style="background: #e5e5e7; height: 12px; border-radius: 6px;">
+                <div style="background: #28a745; height: 100%; width: {{ (confidence_avg * 100)|round(0) }}%; border-radius: 6px;"></div>
+            </div>
+        </div>
+        <div>
+            <h4 style="margin-bottom: 12px; color: #666; font-size: 14px;">Average Risk Score</h4>
+            <div style="font-size: 32px; font-weight: 700; margin-bottom: 8px;">
+                {{ risk_score_avg|round(2) }}
+            </div>
+            <div style="background: #e5e5e7; height: 12px; border-radius: 6px;">
+                <div style="background: #dc3545; height: 100%; width: {{ (risk_score_avg * 100)|round(0) }}%; border-radius: 6px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom: 20px;">Vector Store Statistics</h3>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        <div>
+            <div style="color: #666; font-size: 14px; margin-bottom: 4px;">Flagged Content</div>
+            <div style="font-size: 28px; font-weight: 700;">{{ vs_stats.flagged_content_count }}</div>
+        </div>
+        <div>
+            <div style="color: #666; font-size: 14px; margin-bottom: 4px;">Historical Cases</div>
+            <div style="font-size: 28px; font-weight: 700;">{{ vs_stats.historical_cases_count }}</div>
+        </div>
+        <div>
+            <div style="color: #666; font-size: 14px; margin-bottom: 4px;">T&S Policies</div>
+            <div style="font-size: 28px; font-weight: 700;">{{ vs_stats.policy_count }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-info">
+    <strong>📊 Real-time Metrics:</strong> These metrics update automatically based on agent activity.
+    Use them to monitor system performance and identify trends.
+</div>
+{% endblock %}

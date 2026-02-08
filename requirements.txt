@@ -1,0 +1,42 @@
+# Core Agent Framework
+langgraph==0.2.53
+langchain==0.3.15
+langchain-openai==0.2.14
+langchain-core
+langsmith==0.2.8
+
+# MCP (Model Context Protocol)
+# mcp
+anthropic==0.43.0
+
+# Vector Database
+chromadb==0.5.23
+sentence-transformers==3.4.0
+
+# Database
+aiosqlite==0.20.0
+
+# API Framework
+fastapi==0.115.12
+uvicorn[standard]==0.34.0
+jinja2==3.1.5
+python-multipart==0.0.20
+
+# Utilities
+pydantic==2.10.5
+pydantic-settings==2.7.1
+python-dotenv==1.0.1
+pyyaml==6.0.2
+httpx==0.28.1
+
+# Monitoring and Observability
+prometheus-client==0.21.1
+
+# Testing
+pytest==8.3.5
+pytest-asyncio==0.25.2
+pytest-cov==6.0.0
+
+# Development
+black==24.10.0
+ruff==0.9.2
