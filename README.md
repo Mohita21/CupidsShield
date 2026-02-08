@@ -1,6 +1,6 @@
 # CupidsShield
 
-A production-grade Trust & Safety AI Agent system for dating platforms, built with LangGraph, MCP, and ChromaDB. Provides automated content moderation, appeals processing, and human-in-the-loop review capabilities.
+A production-grade Trust & Safety AI Agent system for dating platforms, built with LangGraph and ChromaDB. Provides automated content moderation, appeals processing, and human-in-the-loop review capabilities with complete observability through LangSmith.
 
 ---
 
@@ -203,16 +203,6 @@ The trace view provides:
 
 This level of observability is critical for production Trust & Safety systems where every decision must be explainable and auditable.
 
-### Key Demo Talking Points
-
-- ✅ **Agentic Workflows**: Multi-step LangGraph orchestration with conditional routing
-- ✅ **MCP Integration**: Clean tool access for moderation actions, database ops, and notifications
-- ✅ **Human-in-the-Loop**: Confidence-based escalation (70-85% threshold) with full context
-- ✅ **Vector Databases**: ChromaDB for pattern detection and similar case retrieval
-- ✅ **Complete Observability**: LangSmith tracing for every workflow execution
-- ✅ **Operator Enablement**: Intuitive UI with all context needed for decisions
-- ✅ **Dating-Specific T&S**: Pig butchering scam detection, harassment, fake profiles
-
 ---
 
 ## Architecture
@@ -238,11 +228,6 @@ This level of observability is critical for production Trust & Safety systems wh
 └─────────────────────┬───────────────────────────────────────┘
                       │
 ┌─────────────────────┴───────────────────────────────────────┐
-│                      MCP SERVERS                            │
-│  • Moderation Tools  • Database Tools  • Notification       │
-└─────────────────────┬───────────────────────────────────────┘
-                      │
-┌─────────────────────┴───────────────────────────────────────┐
 │                    DATA LAYER                               │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
 │  │   SQLite     │  │   ChromaDB   │  │  LangSmith   │      │
@@ -250,6 +235,8 @@ This level of observability is critical for production Trust & Safety systems wh
 │  └──────────────┘  └──────────────┘  └──────────────┘      │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+> **Note:** MCP (Model Context Protocol) server examples are included in the `mcp_servers/` directory for future integration but are not currently used in the active workflows.
 
 ### Decision Flow
 
@@ -285,12 +272,13 @@ Approve     Reject        Escalate
 |-----------|-----------|
 | **Agent Framework** | LangGraph |
 | **LLM** | OpenAI GPT-4 |
-| **Tool Protocol** | MCP (Model Context Protocol) |
 | **Vector DB** | ChromaDB |
 | **Database** | SQLite + aiosqlite |
 | **UI Framework** | FastAPI + Jinja2 |
 | **Observability** | LangSmith |
 | **Embeddings** | Sentence Transformers |
+
+> **Future Integration:** MCP (Model Context Protocol) server implementations are available in `mcp_servers/` for potential future use.
 
 ---
 
@@ -503,10 +491,10 @@ cupidsshield/
 │   ├── cupidsshield.db        # SQLite database (generated)
 │   └── chromadb/              # ChromaDB storage (generated)
 │
-├── mcp_servers/               # Model Context Protocol tools
-│   ├── moderation_tools/      # Content flagging, banning, etc.
-│   ├── database/              # Database access tools
-│   └── notifications/         # User notification tools
+├── mcp_servers/               # MCP examples (for future integration)
+│   ├── moderation_tools/      # Example: Content flagging, banning
+│   ├── database/              # Example: Database access tools
+│   └── notifications/         # Example: User notification tools
 │
 ├── prompts/                   # Prompt templates (customizable)
 │   ├── moderation/
