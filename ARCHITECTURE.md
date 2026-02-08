@@ -1,4 +1,4 @@
-# 🏗️ CupidsShield Architecture Guide
+# CupidsShield Architecture Guide
 
 Complete technical architecture, decision flows, and integration patterns for the CupidsShield Trust & Safety system.
 
@@ -14,7 +14,7 @@ Complete technical architecture, decision flows, and integration patterns for th
 
 ---
 
-## 🎯 Confidence Thresholds
+## Confidence Thresholds
 
 ### Understanding Confidence
 
@@ -365,10 +365,10 @@ The LLM's confidence scores are generally well-calibrated because GPT-4 has been
 
 | Predicted Confidence | Actual Violation Rate | Calibration |
 |---------------------|----------------------|-------------|
-| 90-100% | 94% were violations | ✅ Well calibrated |
-| 80-90% | 85% were violations | ✅ Well calibrated |
-| 70-80% | 73% were violations | ✅ Well calibrated |
-| 60-70% | 61% were violations | ✅ Well calibrated |
+| 90-100% | 94% were violations | Well calibrated |
+| 80-90% | 85% were violations | Well calibrated |
+| 70-80% | 73% were violations | Well calibrated |
+| 60-70% | 61% were violations | Well calibrated |
 
 This means when the LLM says 80% confidence, approximately 80% of those cases are actual violations.
 
@@ -467,14 +467,14 @@ confidence_thresholds:
 ```
 
 **Pros:**
-- ✅ Catch violations before they reach users
-- ✅ Proactive safety
-- ✅ Prevent harm
+- Catch violations before they reach users
+- Proactive safety
+- Prevent harm
 
 **Cons:**
-- ❌ High API volume (every message/profile update)
-- ❌ Higher cost
-- ❌ Slight latency in message delivery
+- High API volume (every message/profile update)
+- Higher cost
+- Slight latency in message delivery
 
 ---
 
@@ -515,14 +515,14 @@ confidence_thresholds:
 ```
 
 **Pros:**
-- ✅ Lower API volume (only reported content)
-- ✅ Lower cost
-- ✅ Focus resources on user-reported issues
+- Lower API volume (only reported content)
+- Lower cost
+- Focus resources on user-reported issues
 
 **Cons:**
-- ❌ Reactive (violations happen before detection)
-- ❌ Depends on user reports
-- ❌ May miss unreported violations
+- Reactive (violations happen before detection)
+- Depends on user reports
+- May miss unreported violations
 
 ---
 
@@ -551,10 +551,10 @@ confidence_thresholds:
 ```
 
 **Pros:**
-- ✅ Balance of proactive + reactive
-- ✅ Cost-effective (only analyze suspicious content)
-- ✅ Fast for clean content (no API call)
-- ✅ Catches most violations
+- Balance of proactive + reactive
+- Cost-effective (only analyze suspicious content)
+- Fast for clean content (no API call)
+- Catches most violations
 
 ---
 
@@ -1030,7 +1030,7 @@ else:
 ┌────────────────────────────────────────────────────────────┐
 │  CASE DETAIL VIEW                                          │
 │                                                            │
-│  ⚠️ ESCALATED CASE - MODERATOR DECISION REQUIRED          │
+│  ESCALATED CASE - MODERATOR DECISION REQUIRED             │
 │                                                            │
 │  ┌────────────────────────────────────────────────┐      │
 │  │ CASE INFORMATION                               │      │
@@ -1085,7 +1085,7 @@ else:
                        │
                        ↓
 ┌────────────────────────────────────────────────────────────┐
-│  🎯 MODERATOR DECISION FORM                                │
+│  MODERATOR DECISION FORM                                   │
 │                                                            │
 │  Decision: [Dropdown]                                     │
 │  ☐ Approve - Content is acceptable                        │
@@ -1122,7 +1122,7 @@ else:
 
 ---
 
-## 🔧 MCP Architecture
+## MCP Architecture
 
 ### What is MCP?
 
@@ -1148,16 +1148,16 @@ result = await tools.flag_content(...)  # Direct function call
 ```
 
 **Pros:**
-- ✅ Simpler to understand
-- ✅ Easier to debug
-- ✅ Faster to develop
-- ✅ No additional dependencies
+- Simpler to understand
+- Easier to debug
+- Faster to develop
+- No additional dependencies
 
 **Cons:**
-- ❌ Tight coupling between agents and tools
-- ❌ Not following MCP standard
-- ❌ Can't easily swap tool implementations
-- ❌ Harder to scale across services
+- Tight coupling between agents and tools
+- Not following MCP standard
+- Can't easily swap tool implementations
+- Harder to scale across services
 
 ---
 
@@ -1418,10 +1418,10 @@ collection.add(
 
 | Scenario | Need Violations Collection? | Need Historical Cases Collection? |
 |----------|---------------------------|-----------------------------------|
-| Detect new scam patterns | ✅ Yes - find similar scams | ✅ Yes - see how similar content was judged |
-| Avoid false positives | ❌ No help | ✅ Yes - find similar content that was approved |
-| Learn from context | ❌ Limited | ✅ Yes - see full decision history |
-| Understand edge cases | ❌ Only violations | ✅ Yes - see borderline cases and outcomes |
+| Detect new scam patterns | Yes - find similar scams | Yes - see how similar content was judged |
+| Avoid false positives | No help | Yes - find similar content that was approved |
+| Learn from context | Limited | Yes - see full decision history |
+| Understand edge cases | Only violations | Yes - see borderline cases and outcomes |
 
 ---
 
@@ -1521,10 +1521,10 @@ state["similar_cases"] = similar_cases  # Only violations!
 ```
 
 **Problem:**
-- ❌ Only finds similar violations
-- ❌ Misses similar approved content
-- ❌ No learning from false positives
-- ❌ Higher false positive rate
+- Only finds similar violations
+- Misses similar approved content
+- No learning from false positives
+- Higher false positive rate
 
 #### After (Searches both):
 ```python
@@ -1547,11 +1547,11 @@ state["similar_cases"] = similar_historical_cases
 ```
 
 **Benefits:**
-- ✅ Finds violation patterns
-- ✅ Finds similar approved content
-- ✅ Learns from false positives
-- ✅ Lower false positive rate
-- ✅ Better context for LLM
+- Finds violation patterns
+- Finds similar approved content
+- Learns from false positives
+- Lower false positive rate
+- Better context for LLM
 
 ---
 
@@ -1624,7 +1624,7 @@ Similar historical cases (including approved content):
 
 ---
 
-## 📊 Database Schema
+## Database Schema
 
 ### Core Tables
 
@@ -1687,7 +1687,7 @@ CREATE TABLE audit_log (
 
 ---
 
-## 🎯 Summary
+## Summary
 
 ### Key Takeaways
 
