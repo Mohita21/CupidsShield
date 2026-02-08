@@ -4,7 +4,7 @@ Complete technical architecture, decision flows, and integration patterns for th
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Confidence Thresholds](#confidence-thresholds)
 - [Content Flow from Dating Apps](#content-flow-from-dating-apps)
@@ -57,7 +57,7 @@ REJECT    ESCALATE               APPROVE   ESCALATE
 
 ---
 
-## 🔢 How Confidence and Risk Scores Are Calculated
+## How Confidence and Risk Scores Are Calculated
 
 ### Confidence Score (0.0 - 1.0)
 
@@ -397,7 +397,7 @@ confidence_thresholds:
 
 ---
 
-## 📨 Content Flow from Dating Apps
+## Content Flow from Dating Apps
 
 ### Option A: Proactive Moderation (All Content)
 
@@ -615,7 +615,7 @@ else:
 
 ---
 
-## 🔄 Decision Flow Scenarios
+## Decision Flow Scenarios
 
 ### Scenario 1: Pig Butchering Scam Detection
 
@@ -1373,7 +1373,7 @@ Load balancing
 
 ---
 
-## 🔍 Vector Store Architecture
+## Vector Store Architecture
 
 ### Two Collections: Why We Need Both
 
